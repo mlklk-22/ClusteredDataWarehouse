@@ -26,11 +26,3 @@ Deliverables Work :
 * Delivered over Githhub.com.
 * Makefile to streamline running application (plus).
 
-
-
-# Project Setup
-* Setup MySQL on your local environment. Create schema "clustereddatawarehouse".
-* to run the project, go to project directory and open terminal. run 'mvn spring-boot-run' cmd
-* endpoints
-  - 
-  - 
