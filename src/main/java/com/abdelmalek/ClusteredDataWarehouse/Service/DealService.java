@@ -53,50 +53,70 @@ public class DealService {
     }
     @Transactional
     public Status createDealInternal(Deal deal)  {
+
         Status status = new Status();
         Calendar calendar = Calendar.getInstance();
         String inputPattern = "yyyy-MM-dd";
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(inputPattern);
         LocalDate localDate ;
 
-        if (!isRequestedTwice(deal)) {
-
+        if (!isRequestedTwice(deal))
+        {
             status.statusCode = 1;
-            if (!deal.getFrom_currency_iso_code().isEmpty()) {
-                if (CurrencyCode.ISO_CURRENCY_CODES.contains(deal.getFrom_currency_iso_code())) {
+            if (!deal.getFrom_currency_iso_code().isEmpty())
+            {
+                if (CurrencyCode.ISO_CURRENCY_CODES.contains(deal.getFrom_currency_iso_code()))
+                {
                     deal.setFrom_currency_iso_code(deal.getFrom_currency_iso_code());
-                } else {
+                } else
+                {
                     return outStatusError("The Format for From_currency_iso_code Not Found!");
                 }
-            } else {
+            }
+            else
+            {
                 return outStatusError("The Value For From_currency_iso_code is Null!");
             }
 
-            if (!deal.getTo_currency_iso_code().isEmpty()) {
-                if (CurrencyCode.ISO_CURRENCY_CODES.contains(deal.getTo_currency_iso_code())) {
+            if (!deal.getTo_currency_iso_code().isEmpty())
+            {
+                if (CurrencyCode.ISO_CURRENCY_CODES.contains(deal.getTo_currency_iso_code()))
+                {
                     deal.setTo_currency_iso_code(deal.getTo_currency_iso_code());
-                } else {
+                }
+                else
+                {
                     return outStatusError("The Format for To_currency_iso_code Not Found!");
                 }
-            } else {
+            }
+            else
+            {
                 return outStatusError("The Value For To_currency_iso_code is Null!");
             }
 
-            if (deal.getDate() != null) {
-                try {
+            if (deal.getDate() != null)
+            {
+                try
+                {
                     localDate = LocalDate.parse(deal.getDate(), inputFormatter);
                     deal.setDate(localDate.format(inputFormatter));
-
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     ex.getMessage();
                 }
-            } else {
+            }
+            else
+            {
                 return outStatusError("The Value For Date is Null!");
             }
 
-            if (deal.getDeal_amount() != 0) {
+            if (deal.getDeal_amount() != 0)
+            {
                 deal.setDeal_amount(deal.getDeal_amount());
-            } else {
+            }
+            else
+            {
                 return outStatusError("The Value For deal_amount is Null!");
             }
 
@@ -108,9 +128,11 @@ public class DealService {
             generateJson("Create_Deals_Output", status);
 
         }
-        else {
+        else
+        {
             return outStatusError("System should not import same request twice!");
         }
+
         return status;
     }
     public Status updateDealInternal(int id, Deal updatedDeal){
@@ -256,7 +278,6 @@ public class DealService {
         fileWriter.write(toBeWrite);
         fileWriter.close();
     }
-
     @Transactional
     public boolean isRequestedTwice(Deal deal){
         String inputPattern = "yyyy-MM-dd";
