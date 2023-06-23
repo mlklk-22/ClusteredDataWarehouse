@@ -1,0 +1,25 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  docker-mysql:
+    container_name: clusterdata
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=clustereddatawarehouse
+    ports:
+      - 3307:3306
+      
+  clustereddatawarehouse:
+    build: ./ClusteredDataWarehouse
+    ports:
+       - 8081:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://clusterdata:3306/clustereddatawarehouse?allowPublicKeyRetrieval=true&useSSL=false
+    depends_on:
+       - docker-mysql
+    
+
+    
